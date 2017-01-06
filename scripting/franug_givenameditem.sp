@@ -14,12 +14,14 @@
 
 Handle g_hOnGiveNamedItemFoward = null;
 
+#define DATA "3.0.2 private version"
+
 public Plugin myinfo =
 {
     name = "CS:GO GiveNamedItem Hook Franug Edition",
     author = "Franc1sco franug and Neuro Toxin",
     description = "Hook for GiveNamedItem to allow other plugins to force classnames and paintkits",
-    version = "3.0.1 private version"
+    version = DATA
 };
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
@@ -112,24 +114,7 @@ public Action OnWeaponEquip(int client, int entity)
 		
 	new itemdefinition = GetEntProp(entity, Prop_Send, "m_iItemDefinitionIndex");
 	char classname[64];
-	GetEdictClassname(entity, classname, 64);
-	switch (itemdefinition)
-	{
-					case 60: strcopy(classname, 64, "weapon_m4a1_silencer");
-					case 61: strcopy(classname, 64, "weapon_usp_silencer");
-					case 63: strcopy(classname, 64, "weapon_cz75a");
-					case 500: strcopy(classname, 64, "weapon_bayonet");
-					case 506: strcopy(classname, 64, "weapon_knife_gut");
-					case 505: strcopy(classname, 64, "weapon_knife_flip");
-					case 508: strcopy(classname, 64, "weapon_knife_m9_bayonet");
-					case 507: strcopy(classname, 64, "weapon_knife_karambit");
-					case 509: strcopy(classname, 64, "weapon_knife_tactical");
-					case 515: strcopy(classname, 64, "weapon_knife_butterfly");
-					case 512: strcopy(classname, 64, "weapon_knife_falchion");
-					case 516: strcopy(classname, 64, "weapon_knife_push");
-					case 64: strcopy(classname, 64, "weapon_revolver");
-					case 514: strcopy(classname, 64, "weapon_knife_survival_bowie");
-	}
+	g_hServerHook.GetClassnameByItemDefinition(itemdefinition, classname, 64);
 	
 	// Call GiveNamedItemEx forward
 	Call_StartForward(g_hOnGiveNamedItemFoward);
