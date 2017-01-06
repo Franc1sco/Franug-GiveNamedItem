@@ -114,7 +114,7 @@ public Action OnWeaponEquip(int client, int entity)
 		
 	new itemdefinition = GetEntProp(entity, Prop_Send, "m_iItemDefinitionIndex");
 	char classname[64];
-	g_hServerHook.GetClassnameByItemDefinition(itemdefinition, classname, 64);
+	if(!g_hServerHook.GetClassnameByItemDefinition(itemdefinition, classname, sizeof(classname))) return;
 	
 	// Call GiveNamedItemEx forward
 	Call_StartForward(g_hOnGiveNamedItemFoward);
