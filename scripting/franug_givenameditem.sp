@@ -14,7 +14,7 @@
 
 Handle g_hOnGiveNamedItemFoward = null;
 
-#define DATA "3.0.2 private version"
+#define DATA "3.0.3 private version"
 
 public Plugin myinfo =
 {

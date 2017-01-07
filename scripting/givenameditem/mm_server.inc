@@ -152,12 +152,12 @@ methodmap GiveNamedItem_ServerHook
 	{
 		if (itemdefinition == 42)
 		{
-			SetNativeString(2, "weapon_knife", length);
+			Format(buffer, length,"weapon_knife");
 			return true;
 		}
 		if (itemdefinition == 59)
 		{
-			SetNativeString(2, "weapon_knife_t", length);
+			Format(buffer, length, "weapon_knife_t");
 			return true;
 		}
 		
