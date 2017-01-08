@@ -14,7 +14,7 @@
 
 Handle g_hOnGiveNamedItemFoward = null;
 
-#define DATA "3.0.3 private version"
+#define DATA "3.0.4 private version"
 
 public Plugin myinfo =
 {
@@ -33,11 +33,17 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 
 public void OnPluginStart()
 {
-	
+	HookEvent("player_spawn", Event_Player_Spawn);
 	RegisterCommands();
 	BuildItems();
 	RegisterConvars();
 	g_hOnGiveNamedItemFoward = CreateGlobalForward("OnGiveNamedItemEx", ET_Ignore, Param_Cell, Param_String);
+}
+
+public Action:Event_Player_Spawn(Handle:event, const String:name[], bool:dontBroadcast)
+{
+	new client = GetClientOfUserId(GetEventInt(event, "userid"));
+	if(g_iFakeClient == client && GetClientTeam(client) > 1) ChangeClientTeam(client, CS_TEAM_SPECTATOR);
 }
 
 public void OnClientPutInServer(int client)
