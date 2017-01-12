@@ -14,7 +14,7 @@
 
 Handle g_hOnGiveNamedItemFoward = null;
 
-#define DATA "3.0.4 private version"
+#define DATA "3.0.5 private version"
 
 public Plugin myinfo =
 {
@@ -134,7 +134,7 @@ public Action OnWeaponEquip(int client, int entity)
 		return;
 	}
 	
-	if(!g_hServerHook.InUse && g_hServerHook.IsItemDefinitionKnife(itemdefinition) && g_hServerHook.ItemDefinition != -1)
+	if(!g_hServerHook.InUse && g_hServerHook.IsItemDefinitionKnife(itemdefinition) && g_hServerHook.ItemDefinition > 0)
 	{
 			
 			Handle ph=CreateDataPack();

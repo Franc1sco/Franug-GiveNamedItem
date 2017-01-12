@@ -154,7 +154,7 @@ public Native_GiveNamedItem_GiveKnife(Handle:plugin, params)
 	int client = GetNativeCell(1);
 	int itemdefinition = GetNativeCell(2);
 	
-	if(itemdefinition == -1)
+	if(itemdefinition < 1)
 	{
 		int knife2 = GetPlayerWeaponSlot(client, 2);
 		if(knife2 != -1) 
