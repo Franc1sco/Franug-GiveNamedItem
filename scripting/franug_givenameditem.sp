@@ -188,7 +188,7 @@ public Action OnWeaponEquip(int client, int entity)
 			g_hServerHook.EntityQuality = 1;
 			
 		if (g_hServerHook.AccountID == 0)
-			g_hServerHook.AccountID = GetSteamAccountID(g_hServerHook.Client);
+			g_hServerHook.AccountID = GetEntProp(entity, Prop_Send, "m_OriginalOwnerXuidLow");
 	}
 	
 	// The last few things
