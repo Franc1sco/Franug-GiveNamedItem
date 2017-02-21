@@ -14,7 +14,25 @@
 
 Handle g_hOnGiveNamedItemFoward = null;
 
-#define DATA "3.0.5 private version"
+#define DATA "4.0 private version"
+
+
+char gC_Knives[][][] = {
+	{"42", "Default CT", "models/weapons/v_knife_default_ct.mdl", "models/weapons/w_knife_default_ct.mdl"},
+	{"59", "Default T", "models/weapons/v_knife_default_t.mdl", "models/weapons/w_knife_default_t.mdl"},
+	{"500", "Bayonet Knife", "models/weapons/v_knife_bayonet.mdl", "models/weapons/w_knife_bayonet.mdl"},
+	{"505", "Flip Knife", "models/weapons/v_knife_flip.mdl", "models/weapons/w_knife_flip.mdl"},
+	{"506", "Gut Knife", "models/weapons/v_knife_gut.mdl", "models/weapons/w_knife_gut.mdl"},
+	{"507", "Karambit Knife", "models/weapons/v_knife_karam.mdl", "models/weapons/w_knife_karam.mdl"},
+	{"508", "M9 Bayonet Knife", "models/weapons/v_knife_m9_bay.mdl", "models/weapons/w_knife_m9_bay.mdl"},
+	{"509", "Huntsman Knife", "models/weapons/v_knife_tactical.mdl", "models/weapons/w_knife_tactical.mdl"},
+	{"512", "Falchion Knife", "models/weapons/v_knife_falchion_advanced.mdl", "models/weapons/w_knife_falchion_advanced.mdl"},
+	{"514", "Bowie Knife", "models/weapons/v_knife_survival_bowie.mdl", "models/weapons/w_knife_survival_bowie.mdl"},
+	{"515", "Butterfly Knife", "models/weapons/v_knife_butterfly.mdl", "models/weapons/w_knife_butterfly.mdl"},
+	{"516", "Shaddow Daggers", "models/weapons/v_knife_push.mdl", "models/weapons/w_knife_push.mdl"},
+};
+
+int gI_KnifeIndexes[12][2];
 
 public Plugin myinfo =
 {
@@ -33,17 +51,18 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 
 public void OnPluginStart()
 {
-	HookEvent("player_spawn", Event_Player_Spawn);
 	RegisterCommands();
 	BuildItems();
 	RegisterConvars();
 	g_hOnGiveNamedItemFoward = CreateGlobalForward("OnGiveNamedItemEx", ET_Ignore, Param_Cell, Param_String);
 }
 
-public Action:Event_Player_Spawn(Handle:event, const String:name[], bool:dontBroadcast)
-{
-	new client = GetClientOfUserId(GetEventInt(event, "userid"));
-	if(g_iFakeClient == client && GetClientTeam(client) > 1) ChangeClientTeam(client, CS_TEAM_SPECTATOR);
+public void OnMapStart() {
+	for (int i = 0; i < sizeof(gC_Knives); i++) {
+		for (int x = 0; x < 2; x++) {
+			gI_KnifeIndexes[i][x] = PrecacheModel(gC_Knives[i][2+x]);
+		}
+	}
 }
 
 public void OnClientPutInServer(int client)
@@ -72,27 +91,6 @@ stock void UnhookPlayer(int client)
 	SDKUnHook(client, SDKHook_WeaponEquip, OnWeaponEquip);
 }
 
-public OnMapStart()
-{
-	CreateTimer(1.0, Timer_CreateFakeClient, any:0, 2);
-}
-
-public OnClientDisconnect(client)
-{
-	if (client == g_iFakeClient)g_iFakeClient = -1;
-}
-
-public OnMapEnd()
-{
-	if(g_iFakeClient != -1 && IsClientInGame(g_iFakeClient)) KickClient(g_iFakeClient, "not used");
-	g_iFakeClient = -1;
-}
-
-public Action Timer_CreateFakeClient(Handle:pTimer, any:_Data)
-{
-	g_iFakeClient = CreateFakeClient("BOT Franug");
-}
-
 public Action AddItemTimer(Handle timer, any ph)
 {  
 	int client, item, definitionindex;
@@ -111,7 +109,6 @@ public Action AddItemTimer(Handle timer, any ph)
 
 public Action OnWeaponEquip(int client, int entity)
 {
-	if (g_iFakeClient == client)return;
 	
 	if(entity < 1 || !IsValidEdict(entity) || !IsValidEntity(entity)) return;
 	
@@ -136,14 +133,8 @@ public Action OnWeaponEquip(int client, int entity)
 	
 	if(!g_hServerHook.InUse && g_hServerHook.IsItemDefinitionKnife(itemdefinition) && g_hServerHook.ItemDefinition > 0)
 	{
-			
-			Handle ph=CreateDataPack();
-			WritePackCell(ph, EntIndexToEntRef(client));
-			WritePackCell(ph, EntIndexToEntRef(entity));
-			WritePackCell(ph, g_hServerHook.ItemDefinition);
-			CreateTimer(0.5 , AddItemTimer, ph, TIMER_FLAG_NO_MAPCHANGE);
-			
-			return;
+		SetEntProp(entity, Prop_Send, "m_iItemDefinitionIndex", g_hServerHook.ItemDefinition);
+		RequestFrame(Request_Knife, EntIndexToEntRef(entity));
 	}
 	
 	if (cvar_print_debugmsgs)
@@ -158,6 +149,7 @@ public Action OnWeaponEquip(int client, int entity)
 	
 	// This is the magic peice
 	SetEntProp(entity, Prop_Send, "m_iItemIDLow", -1);
+	SetEntProp(entity, Prop_Send, "m_iAccountID", GetEntProp(entity, Prop_Send, "m_OriginalOwnerXuidLow"));
 	
 	// Some more special attention around vanilla paintkits
 	if (g_hServerHook.Paintkit == PAINTKIT_VANILLA)
@@ -170,8 +162,10 @@ public Action OnWeaponEquip(int client, int entity)
 	}
 	
 	// Set fallback paintkit if the paintkit isnt vanilla
-	else SetEntProp(entity, Prop_Send, "m_nFallbackPaintKit", g_hServerHook.Paintkit);
-	
+	else{
+		//PrintToChat(client, "hecho pintura numero %i ", g_hServerHook.Paintkit);
+		SetEntProp(entity, Prop_Send, "m_nFallbackPaintKit", g_hServerHook.Paintkit);
+	}
 	// Set wear and seed if required
 	if (g_hServerHook.Paintkit != PAINTKIT_PLAYERS)
 	{
@@ -207,6 +201,32 @@ public Action OnWeaponEquip(int client, int entity)
 	
 	g_hServerHook.Reset(client);
 	
+}
+
+public void Request_Knife(int I_Weaponref) {
+	
+	int I_Weapon = EntRefToEntIndex(I_Weaponref);
+	
+	if (I_Weapon == INVALID_ENT_REFERENCE)return;
+	if (!IsValidEntity(I_Weapon))return;
+	
+	
+	int I_KnifeIndex, I_WorldIndex, I_ItemDefinition;
+
+	I_ItemDefinition = GetEntProp(I_Weapon, Prop_Send, "m_iItemDefinitionIndex");
+	I_WorldIndex = GetEntPropEnt(I_Weapon, Prop_Send, "m_hWeaponWorldModel");
+
+	for (int i = 0; i < sizeof(gC_Knives); i++) {
+		if (I_ItemDefinition == StringToInt(gC_Knives[i][0])) {
+			I_KnifeIndex = i;
+			break;
+		}
+	}
+
+	if (IsValidEdict(I_WorldIndex)) {
+		
+		SetEntProp(I_WorldIndex, Prop_Send, "m_nModelIndex", gI_KnifeIndexes[I_KnifeIndex][1]);
+	}
 }
 
 /*

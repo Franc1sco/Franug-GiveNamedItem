@@ -147,14 +147,12 @@ public Native_GiveNamedItem_GetClassnameByItemDefinition(Handle:plugin, params)
 	return false;
 }
 
-new g_iFakeClient = -1;
-
 public Native_GiveNamedItem_GiveKnife(Handle:plugin, params)
 {
 	int client = GetNativeCell(1);
 	int itemdefinition = GetNativeCell(2);
 	
-	if(itemdefinition < 1)
+	if(itemdefinition == -1)
 	{
 		int knife2 = GetPlayerWeaponSlot(client, 2);
 		if(knife2 != -1) 
@@ -179,14 +177,7 @@ public Native_GiveNamedItem_GiveKnife(Handle:plugin, params)
 			RemovePlayerItem(client, knife2);
 			AcceptEntityInput(knife2, "Kill");
 		}
-		g_hServerHook.InUse = true;
-		
-		int entity = g_iFakeClient == -1 ? GivePlayerItem(client, classname):GivePlayerItem(g_iFakeClient, classname);
-		
-		SetEntProp(entity, Prop_Send, "m_iItemDefinitionIndex", itemdefinition);
-		SetEntProp(entity, Prop_Send, "m_iAccountID", GetSteamAccountID(client));
-		EquipPlayerWeapon(client, entity);
-		g_hServerHook.InUse = false;
+		GivePlayerItem(client, "weapon_knife");
 	}
 }
 
