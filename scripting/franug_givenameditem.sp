@@ -33,7 +33,7 @@
 
 Handle g_hOnGiveNamedItemFoward = null;
 
-#define DATA "4.0 private version"
+#define DATA "4.0.1 private version"
 
 
 char gC_Knives[][][] = {
@@ -150,8 +150,14 @@ public Action OnWeaponEquip(int client, int entity)
 		return;
 	}
 	
-	if(!g_hServerHook.InUse && g_hServerHook.IsItemDefinitionKnife(itemdefinition) && g_hServerHook.ItemDefinition > 0)
+	if(!g_hServerHook.InUse && g_hServerHook.IsItemDefinitionKnife(itemdefinition))
 	{
+		if(g_hServerHook.ItemDefinition < 1)
+		{
+			g_hServerHook.Reset(client);
+			return;
+		}
+		
 		SetEntProp(entity, Prop_Send, "m_iItemDefinitionIndex", g_hServerHook.ItemDefinition);
 		RequestFrame(Request_Knife, EntIndexToEntRef(entity));
 	}
@@ -163,6 +169,7 @@ public Action OnWeaponEquip(int client, int entity)
 	
 	if(g_hServerHook.Paintkit == INVALID_PAINTKIT)
 	{
+		g_hServerHook.Reset(client);
 		return;
 	}
 	
