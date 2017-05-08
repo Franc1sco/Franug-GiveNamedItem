@@ -154,18 +154,10 @@ public Native_GiveNamedItem_GiveKnife(Handle:plugin, params)
 	
 	if(itemdefinition == -1)
 	{
-		int knife2 = GetPlayerWeaponSlot(client, 2);
-		if(knife2 != -1) 
-		{
-			RemovePlayerItem(client, knife2);
-			AcceptEntityInput(knife2, "Kill");
-		}
 		g_hServerHook.InUse = true;
 		
-		int weapon = GivePlayerItem(client, "weapon_knife");
-		knife2 = GetPlayerWeaponSlot(client, 2);
-		if(knife2 != weapon)
-			EquipPlayerWeapon(client, weapon);
+		SafeKnife(client);
+			
 		g_hServerHook.InUse = false;
 		return;
 	}
@@ -174,17 +166,31 @@ public Native_GiveNamedItem_GiveKnife(Handle:plugin, params)
 	
 	if (g_hServerHook.GetClassnameByItemDefinition(itemdefinition, classname, sizeof(classname)))
 	{
-		int knife2 = GetPlayerWeaponSlot(client, 2);
-		if(knife2 != -1) 
-		{
-			RemovePlayerItem(client, knife2);
-			AcceptEntityInput(knife2, "Kill");
-		}
-		int weapon = GivePlayerItem(client, "weapon_knife");
-		knife2 = GetPlayerWeaponSlot(client, 2);
-		if(knife2 != weapon)
-			EquipPlayerWeapon(client, weapon);
+		SafeKnife(client);
 	}
+}
+
+stock SafeKnife(client)
+{
+	bool zeus = false;
+	int knife2 = GetPlayerWeaponSlot(client, 2);
+	if(knife2 != -1) 
+	{
+		RemovePlayerItem(client, knife2);
+		AcceptEntityInput(knife2, "Kill");
+	}
+		
+	knife2 = GetPlayerWeaponSlot(client, 2);
+	if(knife2 != -1) 
+	{
+		RemovePlayerItem(client, knife2);
+		AcceptEntityInput(knife2, "Kill");
+		zeus = true;
+	}
+	
+	GivePlayerItem(client, "weapon_knife");
+	
+	if(zeus) GivePlayerItem(client, "weapon_taser");
 }
 
 public Native_GiveNamedItem_IsItemDefinitionKnife(Handle:plugin, params)
