@@ -33,7 +33,7 @@
 
 Handle g_hOnGiveNamedItemFoward = null;
 
-#define DATA "4.0.1 private version"
+#define DATA "4.0.2 private version"
 
 
 char gC_Knives[][][] = {

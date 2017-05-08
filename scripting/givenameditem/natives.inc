@@ -162,7 +162,8 @@ public Native_GiveNamedItem_GiveKnife(Handle:plugin, params)
 		}
 		g_hServerHook.InUse = true;
 		
-		GivePlayerItem(client, "weapon_knife");
+		int weapon = GivePlayerItem(client, "weapon_knife");
+		EquipPlayerWeapon(client, weapon);
 		g_hServerHook.InUse = false;
 		return;
 	}
@@ -177,7 +178,8 @@ public Native_GiveNamedItem_GiveKnife(Handle:plugin, params)
 			RemovePlayerItem(client, knife2);
 			AcceptEntityInput(knife2, "Kill");
 		}
-		GivePlayerItem(client, "weapon_knife");
+		int weapon = GivePlayerItem(client, "weapon_knife");
+		EquipPlayerWeapon(client, weapon);
 	}
 }
 
