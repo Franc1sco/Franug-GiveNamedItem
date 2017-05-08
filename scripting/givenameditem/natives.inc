@@ -163,7 +163,9 @@ public Native_GiveNamedItem_GiveKnife(Handle:plugin, params)
 		g_hServerHook.InUse = true;
 		
 		int weapon = GivePlayerItem(client, "weapon_knife");
-		EquipPlayerWeapon(client, weapon);
+		knife2 = GetPlayerWeaponSlot(client, 2);
+		if(knife2 != weapon)
+			EquipPlayerWeapon(client, weapon);
 		g_hServerHook.InUse = false;
 		return;
 	}
@@ -179,7 +181,9 @@ public Native_GiveNamedItem_GiveKnife(Handle:plugin, params)
 			AcceptEntityInput(knife2, "Kill");
 		}
 		int weapon = GivePlayerItem(client, "weapon_knife");
-		EquipPlayerWeapon(client, weapon);
+		knife2 = GetPlayerWeaponSlot(client, 2);
+		if(knife2 != weapon)
+			EquipPlayerWeapon(client, weapon);
 	}
 }
 
