@@ -21,6 +21,10 @@
 #include <cstrike>
 #include <sdktools>
 #include <sdkhooks>
+
+Handle g_taser_time[MAXPLAYERS + 1];
+
+
 #define _givenameditem_server
 #include <givenameditem>
 #include "givenameditem/convars.inc"
@@ -33,7 +37,7 @@
 
 Handle g_hOnGiveNamedItemFoward = null;
 
-#define DATA "4.0.4 private version"
+#define DATA "4.0.5 private version"
 
 
 char gC_Knives[][][] = {
@@ -74,6 +78,32 @@ public void OnPluginStart()
 	BuildItems();
 	RegisterConvars();
 	g_hOnGiveNamedItemFoward = CreateGlobalForward("OnGiveNamedItemEx", ET_Ignore, Param_Cell, Param_String);
+	
+	HookEvent("weapon_fire", EventWeaponFire, EventHookMode_Post);
+}
+
+public EventWeaponFire(Handle:event, const String:name[],bool:dontBroadcast)
+{
+	new client = GetClientOfUserId(GetEventInt(event, "userid"));
+	new String:weaponName[32];
+	GetEventString(event, "weapon", weaponName, sizeof(weaponName));
+
+	if(StrEqual(weaponName, "weapon_taser", false))
+	{
+		if (g_taser_time[client] != null)KillTimer(g_taser_time[client]);
+		g_taser_time[client] = CreateTimer(5.0, NoBug, client);
+	}
+}
+
+public OnClientDisconnect(client)
+{
+	if (g_taser_time[client] != null)KillTimer(g_taser_time[client]);
+	g_taser_time[client] = null;
+}
+
+public Action NoBug(Handle timer, any client)
+{
+	g_taser_time[client] = null;
 }
 
 public void OnMapStart() {

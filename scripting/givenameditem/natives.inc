@@ -172,10 +172,19 @@ public Native_GiveNamedItem_GiveKnife(Handle:plugin, params)
 
 stock SafeKnife(client)
 {
+	if(!IsPlayerAlive(client))
+		return;
+		
+	
 	bool zeus = false;
+	char classname[64];
 	int knife2 = GetPlayerWeaponSlot(client, 2);
 	if(knife2 != -1) 
 	{
+		if (!GetEdictClassname(knife2, classname, 64))return;
+		
+		if (StrEqual(classname, "weapon_taser"))return;
+		
 		RemovePlayerItem(client, knife2);
 		AcceptEntityInput(knife2, "Kill");
 	}
@@ -188,9 +197,9 @@ stock SafeKnife(client)
 		zeus = true;
 	}
 	
-	GivePlayerItem(client, "weapon_knife");
+	if(StrEqual(classname, "weapon_knife")) GivePlayerItem(client, "weapon_knife");
 	
-	if(zeus) GivePlayerItem(client, "weapon_taser");
+	if(zeus && g_taser_time[client] == null) GivePlayerItem(client, "weapon_taser");
 }
 
 public Native_GiveNamedItem_IsItemDefinitionKnife(Handle:plugin, params)
