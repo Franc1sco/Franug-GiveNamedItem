@@ -24,6 +24,7 @@
 
 Handle g_taser_time[MAXPLAYERS + 1];
 
+Handle g_hOnGiveNamedItemFoward;
 
 #define _givenameditem_server
 #include <givenameditem>
@@ -35,9 +36,7 @@ Handle g_taser_time[MAXPLAYERS + 1];
 #include "givenameditem/commands.inc"
 #pragma semicolon 1
 
-Handle g_hOnGiveNamedItemFoward = null;
-
-#define DATA "4.0.5 private version"
+#define DATA "4.0.6 private version"
 
 
 char gC_Knives[][][] = {
@@ -77,7 +76,6 @@ public void OnPluginStart()
 	RegisterCommands();
 	BuildItems();
 	RegisterConvars();
-	g_hOnGiveNamedItemFoward = CreateGlobalForward("OnGiveNamedItemEx", ET_Ignore, Param_Cell, Param_String);
 	
 	HookEvent("weapon_fire", EventWeaponFire, EventHookMode_Post);
 }

@@ -5,6 +5,8 @@
 
 stock CreateNatives()
 {
+	g_hOnGiveNamedItemFoward = CreateGlobalForward("OnGiveNamedItemEx", ET_Ignore, Param_Cell, Param_String);
+	
 	CreateNative("GiveNamedItem_SetClassname", Native_GiveNamedItem_SetClassname);
 	CreateNative("GiveNamedItem_GetDefinitionIndex", Native_GiveNamedItem_GetDefinitionIndex);
 	CreateNative("GiveNamedItem_SetDefinitionIndex", Native_GiveNamedItem_SetDefinitionIndex);
