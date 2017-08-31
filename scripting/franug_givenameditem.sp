@@ -36,7 +36,7 @@ Handle g_hOnGiveNamedItemFoward;
 #include "givenameditem/commands.inc"
 #pragma semicolon 1
 
-#define DATA "4.0.6 private version"
+#define DATA "4.1 private version"
 
 
 char gC_Knives[][][] = {
@@ -203,7 +203,7 @@ public Action OnWeaponEquip(int client, int entity)
 	
 	// This is the magic peice
 	SetEntProp(entity, Prop_Send, "m_iItemIDLow", -1);
-	SetEntProp(entity, Prop_Send, "m_iAccountID", GetEntProp(entity, Prop_Send, "m_OriginalOwnerXuidLow"));
+	//SetEntProp(entity, Prop_Send, "m_iAccountID", GetEntProp(entity, Prop_Send, "m_OriginalOwnerXuidLow"));
 	
 	// Some more special attention around vanilla paintkits
 	if (g_hServerHook.Paintkit == PAINTKIT_VANILLA)
@@ -233,10 +233,15 @@ public Action OnWeaponEquip(int client, int entity)
 		SetEntProp(entity, Prop_Send, "m_nFallbackStatTrak", g_hServerHook.Kills);
 		
 		if (g_hServerHook.EntityQuality == -1)
-			g_hServerHook.EntityQuality = 1;
-			
+		{
+			if(g_hServerHook.IsItemDefinitionKnife(itemdefinition))
+				g_hServerHook.EntityQuality = 3;
+			else
+				g_hServerHook.EntityQuality = 9;
+		}
+		
 		if (g_hServerHook.AccountID == 0)
-			g_hServerHook.AccountID = GetSteamAccountID(g_hServerHook.Client);
+			g_hServerHook.AccountID = GetSteamAccountID2(client);
 	}
 	
 	// The last few things
@@ -255,6 +260,20 @@ public Action OnWeaponEquip(int client, int entity)
 	
 	g_hServerHook.Reset(client);
 	
+}
+
+GetSteamAccountID2(client)
+{
+	char steam32[20];
+	char temp[20];
+	GetClientAuthId(client, AuthId_Steam3, steam32, sizeof(steam32));
+	strcopy(temp, sizeof(temp), steam32[5]);
+	int index;
+	if((index = StrContains(temp, "]")) > -1)
+	{
+		temp[index] = '\0';
+	}
+	return StringToInt(temp);	
 }
 
 public void Request_Knife(int I_Weaponref) {
