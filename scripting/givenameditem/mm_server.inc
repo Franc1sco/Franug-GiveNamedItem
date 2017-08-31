@@ -13,6 +13,8 @@ int g_iEntityQuality = -1;
 bool g_bSwitchTeam = false;
 int g_iAccountID = false;
 
+char NameTag[128];
+
 methodmap GiveNamedItem_ServerHook
 {
 	public GiveNamedItem_ServerHook()

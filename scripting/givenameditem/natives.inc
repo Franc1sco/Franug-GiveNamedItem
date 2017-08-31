@@ -26,6 +26,8 @@ stock CreateNatives()
 	CreateNative("GiveNamedItem_GetAccountID", Native_GiveNamedItem_GetAccountID);
 	CreateNative("GiveNamedItem_SetAccountID", Native_GiveNamedItem_SetAccountID);
 	
+	CreateNative("GiveNamedItem_SetNameTag", Native_GiveNamedItem_SetNameTag);
+	
 	CreateNative("GiveNamedItem_GetItemDefinitionByClassname", Native_GiveNamedItem_GetItemDefinitionByClassname);
 	CreateNative("GiveNamedItem_GetClassnameByItemDefinition", Native_GiveNamedItem_GetClassnameByItemDefinition);
 	CreateNative("GiveNamedItem_IsItemDefinitionKnife", Native_GiveNamedItem_IsItemDefinitionKnife);
@@ -33,6 +35,11 @@ stock CreateNatives()
 	CreateNative("GetNamedItem_GetWeaponTeamByItemDefinition", Native_GetNamedItem_GetWeaponTeamByItemDefinition);
 	
 	CreateNative("GiveNamedItem_GiveKnife", Native_GiveNamedItem_GiveKnife);
+}
+
+public Native_GiveNamedItem_SetNameTag(Handle:plugin, params)
+{
+	GetNativeString(1, NameTag, 128);
 }
 
 public Native_GiveNamedItem_SetClassname(Handle:plugin, params)

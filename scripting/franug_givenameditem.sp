@@ -36,7 +36,7 @@ Handle g_hOnGiveNamedItemFoward;
 #include "givenameditem/commands.inc"
 #pragma semicolon 1
 
-#define DATA "4.1 private version"
+#define DATA "5.0 private version"
 
 
 char gC_Knives[][][] = {
@@ -248,6 +248,8 @@ public Action OnWeaponEquip(int client, int entity)
 	if (g_hServerHook.EntityQuality > -1)
 		SetEntProp(entity, Prop_Send, "m_iEntityQuality", g_hServerHook.EntityQuality);
 		
+	if(!StrEqual(NameTag, "none")) SetEntDataString(entity, FindSendPropInfo("CBaseAttributableItem", "m_szCustomName"), NameTag, 128);
+	
 	if (g_hServerHook.AccountID > 0)
 		SetEntProp(entity, Prop_Send, "m_iAccountID", g_hServerHook.AccountID);
 	
