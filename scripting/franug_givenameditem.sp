@@ -36,7 +36,7 @@ Handle g_hOnGiveNamedItemFoward;
 #include "givenameditem/commands.inc"
 #pragma semicolon 1
 
-#define DATA "5.0 private version"
+#define DATA "5.0.1 private version"
 
 
 char gC_Knives[][][] = {
@@ -157,7 +157,7 @@ public Action AddItemTimer(Handle timer, any ph)
 public Action OnWeaponEquip(int client, int entity)
 {
 	
-	if(entity < 1 || !IsValidEdict(entity) || !IsValidEntity(entity)) return;
+	if(!IsValidClient(client) || entity < 1 || !IsValidEdict(entity) || !IsValidEntity(entity)) return;
 	
 	if (GetEntProp(entity, Prop_Send, "m_hPrevOwner") > 0)
 		return;
@@ -263,6 +263,14 @@ public Action OnWeaponEquip(int client, int entity)
 	g_hServerHook.Reset(client);
 	
 }
+
+stock bool:IsValidClient( client ) 
+{
+    if ( !( 1 <= client <= MaxClients ) || !IsClientInGame(client) ) 
+        return false; 
+     
+    return true; 
+}  
 
 GetSteamAccountID2(client)
 {
