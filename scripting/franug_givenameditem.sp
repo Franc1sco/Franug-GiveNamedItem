@@ -36,7 +36,7 @@ Handle g_hOnGiveNamedItemFoward;
 #include "givenameditem/commands.inc"
 #pragma semicolon 1
 
-#define DATA "5.0.1 private version"
+#define DATA "5.0.2 private version"
 
 
 char gC_Knives[][][] = {
@@ -223,7 +223,7 @@ public Action OnWeaponEquip(int client, int entity)
 	// Set wear and seed if required
 	if (g_hServerHook.Paintkit != PAINTKIT_PLAYERS)
 	{
-		SetEntProp(entity, Prop_Send, "m_nFallbackSeed", g_hServerHook.Seed);
+		SetEntProp(entity, Prop_Send, "m_nFallbackSeed", GetRandomInt(0, 8192));
 		SetEntPropFloat(entity, Prop_Send, "m_flFallbackWear", g_hServerHook.Wear);
 	}
 	
@@ -259,6 +259,11 @@ public Action OnWeaponEquip(int client, int entity)
 								g_hServerHook.Paintkit, g_hServerHook.Seed, g_hServerHook.Wear, g_hServerHook.Kills, g_hServerHook.EntityQuality);
 	}
 	
+	if(g_hServerHook.IsItemDefinitionKnife(itemdefinition))
+	{
+		SetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity", client);
+		SetEntPropEnt(entity, Prop_Send, "m_hPrevOwner", -1);
+	}
 	
 	g_hServerHook.Reset(client);
 	
