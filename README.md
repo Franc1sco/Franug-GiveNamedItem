@@ -1,4 +1,4 @@
-Required latest version of PTaH extension -> https://ptah.zizt.ru/
+## Required latest version of PTaH extension -> https://ptah.zizt.ru/
 
 
 ## Follow the rules here: https://github.com/Franc1sco/Franug-PRIVATE-PLUGINS
