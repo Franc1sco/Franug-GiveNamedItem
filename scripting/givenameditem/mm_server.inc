@@ -117,6 +117,8 @@ methodmap GiveNamedItem_ServerHook
 		g_iEntityQuality = -1;
 		g_bSwitchTeam = false;
 		g_iAccountID = 0;
+		
+		strcopy(NameTag, 128, "none");
 	}
 	
 	public void SetClassname(const char[] classname)

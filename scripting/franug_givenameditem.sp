@@ -36,7 +36,7 @@ Handle g_hOnGiveNamedItemFoward;
 #include "givenameditem/commands.inc"
 #pragma semicolon 1
 
-#define DATA "5.0.2 private version"
+#define DATA "5.0.3 private version"
 
 
 char gC_Knives[][][] = {
