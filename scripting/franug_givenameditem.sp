@@ -36,7 +36,7 @@ Handle g_hOnGiveNamedItemFoward;
 #include "givenameditem/commands.inc"
 #pragma semicolon 1
 
-#define DATA "5.0.3 private version"
+#define DATA "6.0 private version"
 
 
 char gC_Knives[][][] = {
@@ -195,7 +195,7 @@ public Action OnWeaponEquip(int client, int entity)
 		PrintToConsole(client, "----====> OnGiveNamedItemPost(entity=%d, classname=%s)", entity, classname);
 	}
 	
-	if(g_hServerHook.Paintkit == INVALID_PAINTKIT)
+	if(g_hServerHook.Paintkit == INVALID_PAINTKIT && g_hServerHook.Kills == -1 && g_hServerHook.EntityQuality == -1 && StrEqual(NameTag, "none"))
 	{
 		g_hServerHook.Reset(client);
 		return;
@@ -208,11 +208,10 @@ public Action OnWeaponEquip(int client, int entity)
 	// Some more special attention around vanilla paintkits
 	if (g_hServerHook.Paintkit == PAINTKIT_VANILLA)
 	{
-		//if (!g_hServerHook.TeamSwitch)
-		//	SetEntProp(entity, Prop_Send, "m_nFallbackPaintKit", g_hServerHook.Paintkit);
+		SetEntProp(entity, Prop_Send, "m_nFallbackPaintKit", g_hServerHook.Paintkit);
 			
-		/*if (g_hServerHook.EntityQuality == -1)
-			g_hServerHook.EntityQuality = 1;*/
+		if (g_hServerHook.EntityQuality == -1)
+			g_hServerHook.EntityQuality = 1;
 	}
 	
 	// Set fallback paintkit if the paintkit isnt vanilla
