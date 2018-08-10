@@ -36,7 +36,7 @@ Handle g_hOnGiveNamedItemFoward;
 #include "givenameditem/commands.inc"
 #pragma semicolon 1
 
-#define DATA "6.0 private version"
+#define DATA "6.1 private version"
 
 
 char gC_Knives[][][] = {
@@ -52,9 +52,13 @@ char gC_Knives[][][] = {
 	{"514", "Bowie Knife", "models/weapons/v_knife_survival_bowie.mdl", "models/weapons/w_knife_survival_bowie.mdl"},
 	{"515", "Butterfly Knife", "models/weapons/v_knife_butterfly.mdl", "models/weapons/w_knife_butterfly.mdl"},
 	{"516", "Shaddow Daggers", "models/weapons/v_knife_push.mdl", "models/weapons/w_knife_push.mdl"},
+	{"519", "Ursus Knife", "models/weapons/v_knife_ursus.mdl", "models/weapons/w_knife_ursus.mdl"},
+	{"520", "Navaja Knife", "models/weapons/v_knife_gypsy_jackknife.mdl", "models/weapons/w_knife_gypsy_jackknife.mdl"},
+	{"522", "Stiletto Knife", "models/weapons/v_knife_stiletto.mdl", "models/weapons/w_knife_stiletto.mdl"},
+	{"523", "Talon Knife", "models/weapons/v_knife_widowmaker.mdl", "models/weapons/w_knife_widowmaker.mdl"},
 };
 
-int gI_KnifeIndexes[12][2];
+int gI_KnifeIndexes[16][2];
 
 public Plugin myinfo =
 {
