@@ -3,7 +3,7 @@ int g_iClient = -1;
 int g_iItemDefinition = 0;
 int g_iPaintkit = -1;
 int g_iSeed = 100;
-float g_fWear = 0.001;
+float g_fWear = 0.0;
 int g_iKills = -1;
 bool g_bClassnameReset = false;
 int g_iEntity = -1;
@@ -108,7 +108,7 @@ methodmap GiveNamedItem_ServerHook
 		g_iItemDefinition = -1;
 		g_iPaintkit = INVALID_PAINTKIT;
 		g_iSeed = 100;
-		g_fWear = 0.001;
+		g_fWear = 0.0;
 		g_iKills = -1;
 		g_bClassnameReset = false;
 		g_iEntity = -1;
