@@ -227,7 +227,9 @@ public Action OnWeaponEquip(int client, int entity)
 	// Set wear and seed if required
 	if (g_hServerHook.Paintkit != PAINTKIT_PLAYERS)
 	{
-		SetEntProp(entity, Prop_Send, "m_nFallbackSeed", GetRandomInt(0, 8192));
+		if(g_hServerHook.Seed == -1)SetEntProp(entity, Prop_Send, "m_nFallbackSeed", GetRandomInt(0, 8192));
+		else SetEntProp(entity, Prop_Send, "m_nFallbackSeed", g_hServerHook.Seed);
+		
 		SetEntPropFloat(entity, Prop_Send, "m_flFallbackWear", g_hServerHook.Wear);
 	}
 	
