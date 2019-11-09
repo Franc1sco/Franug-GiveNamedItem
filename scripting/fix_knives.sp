@@ -6,19 +6,30 @@
 #include <sm_franugknife>
 #include <givenameditem>
 
+#define DATA "1.1"
+
+public Plugin:myinfo =
+{
+	name = "SM Fix Knives for Franug GiveNamedItem plugin",
+	author = "Franc1sco franug",
+	description = "",
+	version = DATA,
+	url = "http://steamcommunity.com/id/franug"
+};
+
 public void OnPluginStart()
 {
 	PTaH(PTaH_GiveNamedItemPre, Hook, GiveNamedItemPre);
-	PTaH(PTaH_GiveNamedItem, Hook, GiveNamedItem);
+	PTaH(PTaH_GiveNamedItemPost, Hook, GiveNamedItem);
 }
 
-public Action GiveNamedItemPre(int client, char classname[64], CEconItemView &item, bool &ignoredCEconItemView)
+public Action GiveNamedItemPre(int client, char classname[64], CEconItemView &Item, bool &IgnoredCEconItemView, bool &OriginIsNULL, float Origin[3])
 {
 	if (IsValidClient(client))
 	{
 		if (Franug_GetKnife(client) > 2 && IsKnifeClass(classname))
 		{
-			ignoredCEconItemView = true;
+			IgnoredCEconItemView = true;
 			GiveNamedItemEx.GetClassnameByItemDefinition(Franug_GetKnife(client), classname, sizeof(classname));
 			return Plugin_Changed;
 		}
@@ -26,7 +37,7 @@ public Action GiveNamedItemPre(int client, char classname[64], CEconItemView &it
 	return Plugin_Continue;
 }
 
-public void GiveNamedItem(int client, const char[] classname, const CEconItemView item, int entity)
+public void GiveNamedItem(int client, const char[] classname, const CEconItemView Item, int entity, bool OriginIsNULL, const float Origin[3])
 {
 	if (IsValidClient(client) && IsValidEntity(entity))
 	{
