@@ -36,7 +36,7 @@ Handle g_hOnGiveNamedItemFoward;
 #include "givenameditem/commands.inc"
 #pragma semicolon 1
 
-#define DATA "6.2.1"
+#define DATA "6.2.2"
 
 
 char gC_Knives[][][] = {
@@ -57,9 +57,13 @@ char gC_Knives[][][] = {
 	{"522", "Stiletto Knife", "models/weapons/v_knife_stiletto.mdl", "models/weapons/w_knife_stiletto.mdl"},
 	{"523", "Talon Knife", "models/weapons/v_knife_widowmaker.mdl", "models/weapons/w_knife_widowmaker.mdl"},
 	{"503", "Classic Knife", "models/weapons/v_knife_css.mdl", "models/weapons/w_knife_css.mdl"},
+	{"521", "Outdoor Knife", "models/weapons/v_knife_outdoor.mdl", "models/weapons/w_knife_outdoor.mdl"},
+	{"518", "Canis Knife", "models/weapons/v_knife_canis.mdl", "models/weapons/w_knife_canis.mdl"},
+	{"517", "Cord Knife", "models/weapons/v_knife_cord.mdl", "models/weapons/w_knife_cord.mdl"},
+	{"525", "Skeleton Knife", "models/weapons/v_knife_skeleton.mdl", "models/weapons/w_knife_skeleton.mdl"},
 };
 
-int gI_KnifeIndexes[17][2];
+int gI_KnifeIndexes[21][2];
 
 public Plugin myinfo =
 {
